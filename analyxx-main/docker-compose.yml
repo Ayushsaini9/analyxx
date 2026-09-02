@@ -1,0 +1,14 @@
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: pyq_db
+      POSTGRES_USER: pyq_user
+      POSTGRES_PASSWORD: pyqsecret123
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"

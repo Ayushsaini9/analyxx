@@ -1,0 +1,58 @@
+# ANALYXX AI
+
+> AI-powered exam preparation platform predicting questions with 94% accuracy.
+
+ANALYXX AI is an innovative platform designed for students preparing for competitive exams like JEE, NEET, UPSC, GATE, CAT, CBSE, and RTU university exams. It leverages artificial intelligence to analyze previous year's question papers (PYQs), providing users with accurate predictions of upcoming exam questions. The service offers a unique value proposition by transforming static past papers into dynamic tools for targeted preparation.
+
+Users can upload their exam papers to receive AI-driven insights, including topic predictions, pattern analysis, and personalized study plans. This data-driven approach helps students focus their efforts on high-yield topics, optimize their study schedules, and ultimately improve their chances of success. The platform aims to make exam preparation more efficient and effective by providing actionable intelligence derived from vast amounts of historical exam data.
+
+## Core Features
+
+- [Homepage](https://analyxx.com/): AI-powered exam prep: predict questions, analyze patterns, and get smart study plans.
+- [Previous Year Papers](https://analyxx.com/previous-year-papers): Access and analyze previous year papers for various competitive exams.
+- [RTU PYQ](https://analyxx.com/rtu-pyq): RTU Previous Year Question Papers — free download for all B.Tech branches (CS, IT, ME, CE, EE, EC).
+- [Predict Paper](https://analyxx.com/predict-paper): Use AI to predict future exam questions based on past papers.
+- [Upload Papers](https://analyxx.com/upload): Upload your previous year papers for AI analysis and prediction.
+- [Important Questions](https://analyxx.com/important-questions): Discover and focus on questions predicted to be important for your exam.
+- [Exam Analysis](https://analyxx.com/analysis): Get detailed AI-driven analysis of exam patterns and topics.
+
+## Exams
+
+- [All Exams](https://analyxx.com/exams): Overview of all supported exams for AI-powered preparation.
+- [JEE Exam](https://analyxx.com/exams/jee): AI exam predictions and preparation resources for JEE.
+- [NEET Exam](https://analyxx.com/exams/neet): AI exam predictions and preparation resources for NEET.
+- [UPSC Exam](https://analyxx.com/exams/upsc): AI exam predictions and preparation resources for UPSC.
+- [GATE Exam](https://analyxx.com/exams/gate): AI exam predictions and preparation resources for GATE.
+- [CAT Exam](https://analyxx.com/exams/cat): AI exam predictions and preparation resources for CAT.
+- [SSC Exam](https://analyxx.com/exams/ssc): AI exam predictions and preparation resources for SSC.
+- [RTU Exam](https://analyxx.com/exams/rtu): RTU B.Tech previous year papers and AI predictions for all branches and semesters.
+- [CBSE Exam](https://analyxx.com/exams/cbse): CBSE Class 10 & 12 board papers and AI predictions.
+
+## PYQ Landing Pages (Previous Year Question Papers)
+
+- [JEE PYQ](https://analyxx.com/jee-pyq): Download JEE Main & Advanced previous year question papers — Physics, Chemistry, Mathematics.
+- [NEET PYQ](https://analyxx.com/neet-pyq): Download NEET-UG previous year question papers — Physics, Chemistry, Biology.
+- [UPSC PYQ](https://analyxx.com/upsc-pyq): Download UPSC CSE Prelims & Mains previous year question papers.
+- [GATE PYQ](https://analyxx.com/gate-pyq): Download GATE previous year papers for CSE, ECE, ME, EE, CE & all branches.
+- [CAT PYQ](https://analyxx.com/cat-pyq): Download CAT previous year papers — VARC, DILR, Quantitative Ability.
+- [SSC PYQ](https://analyxx.com/ssc-pyq): Download SSC CGL, CHSL, MTS previous year papers — all shifts.
+- [RTU PYQ](https://analyxx.com/rtu-pyq): Download RTU B.Tech PYQs for CS, IT, ME, CE, EE, EC — all semesters.
+- [CBSE PYQ](https://analyxx.com/cbse-pyq): Download CBSE Class 10 & 12 board exam papers — all subjects.
+
+## Information
+
+- [Library](https://analyxx.com/library): Explore the library of resources and insights for exam preparation.
+- [About Us](https://analyxx.com/about): Learn about the ANALYXX AI platform and its mission.
+
+## Account Management
+
+- [Login](https://analyxx.com/login): Log in to your ANALYXX AI account.
+- [Register](https://analyxx.com/register): Create a new account for ANALYXX AI.
+
+## Legal
+
+- [Privacy Policy](https://analyxx.com/privacy): Understand how ANALYXX AI handles your data.
+
+## Contact
+
+- [Contact Us](mailto:contact@analyxx.com): Contact ANALYXX AI support via email.

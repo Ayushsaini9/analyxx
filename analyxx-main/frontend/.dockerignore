@@ -1,0 +1,12 @@
+# ── Never include secrets or dev artifacts in Docker images ──
+.env
+.env.*
+!.env.example
+.next/
+node_modules/
+npm-debug.log*
+.DS_Store
+*.log
+.gitignore
+*.md
+.vercel

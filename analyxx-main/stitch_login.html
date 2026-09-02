@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ANALYXX AI - Premium Login</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Newsreader:ital,wght@0,500;0,600;1,500;1,600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed-dim": "#c9c6c5",
+                        "primary-fixed": "#6ffbbe",
+                        "error-container": "#93000a",
+                        "error": "#ffb4ab",
+                        "outline": "#86948a",
+                        "on-primary-fixed": "#002113",
+                        "inverse-primary": "#006c49",
+                        "on-secondary-container": "#b7b4b4",
+                        "secondary-fixed": "#e5e2e1",
+                        "surface-variant": "#353535",
+                        "on-primary": "#003824",
+                        "surface-container-high": "#2a2a2a",
+                        "background": "#131313",
+                        "surface-dim": "#131313",
+                        "on-error": "#690005",
+                        "surface": "#131313",
+                        "on-error-container": "#ffdad6",
+                        "surface-container-highest": "#353535",
+                        "inverse-on-surface": "#313030",
+                        "primary-container": "#10b981",
+                        "outline-variant": "#3c4a42",
+                        "primary": "#4edea3",
+                        "on-primary-container": "#00422b",
+                        "on-background": "#e5e2e1",
+                        "on-primary-fixed-variant": "#005236",
+                        "on-tertiary-fixed": "#410005",
+                        "on-tertiary": "#650911",
+                        "tertiary-fixed-dim": "#ffb3af",
+                        "on-secondary": "#313030",
+                        "surface-tint": "#4edea3",
+                        "inverse-surface": "#e5e2e1",
+                        "surface-container": "#20201f",
+                        "surface-container-lowest": "#0e0e0e",
+                        "on-tertiary-container": "#711419",
+                        "tertiary": "#ffb3af",
+                        "tertiary-container": "#fc7c78",
+                        "surface-container-low": "#1c1b1b",
+                        "on-tertiary-fixed-variant": "#842225",
+                        "tertiary-fixed": "#ffdad7",
+                        "secondary-container": "#474646",
+                        "on-surface-variant": "#bbcabf",
+                        "on-secondary-fixed": "#1c1b1b",
+                        "on-secondary-fixed-variant": "#474646",
+                        "secondary": "#c9c6c5",
+                        "primary-fixed-dim": "#4edea3",
+                        "on-surface": "#e5e2e1",
+                        "surface-bright": "#393939"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "margin-mobile": "20px",
+                        "margin-desktop": "64px",
+                        "container-max": "1280px",
+                        "gutter": "24px",
+                        "unit": "8px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "display-lg": ["Newsreader"],
+                        "label-md": ["Inter"],
+                        "body-md": ["Inter"],
+                        "display-lg-mobile": ["Newsreader"],
+                        "headline-sm": ["Newsreader"],
+                        "headline-md": ["Newsreader"],
+                        "label-sm": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "display-lg": ["64px", {"lineHeight": "72px", "letterSpacing": "-0.02em", "fontWeight": "500"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "display-lg-mobile": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.01em", "fontWeight": "500"}],
+                        "headline-sm": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "headline-md": ["32px", {"lineHeight": "40px", "fontWeight": "500"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #050505;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 32px 32px;
+        }
+        .ambient-glow-top {
+            position: fixed;
+            top: -100px;
+            right: -100px;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .ambient-glow-bottom {
+            position: fixed;
+            bottom: -150px;
+            left: -150px;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.05) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .glass-card {
+            backdrop-filter: blur(20px);
+            background-color: rgba(20, 20, 20, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center font-body-md text-on-surface p-margin-mobile md:p-margin-desktop overflow-x-hidden">
+<div class="ambient-glow-top"></div>
+<div class="ambient-glow-bottom"></div>
+<!-- Header Section -->
+<header class="fixed top-0 left-0 w-full px-margin-mobile md:px-margin-desktop py-8 flex justify-center pointer-events-none">
+<h1 class="font-display-lg text-headline-md tracking-tight text-primary">ANALYXX AI</h1>
+</header>
+<main class="w-full max-w-[420px] z-10">
+<!-- Heading -->
+<div class="text-center mb-10">
+<h2 class="font-headline-md text-headline-md text-on-surface">
+                Welcome <span class="italic text-primary-container font-display-lg">back</span>
+</h2>
+<p class="font-body-md text-outline mt-2">Enter your credentials to access precision intelligence.</p>
+</div>
+<!-- Glassmorphism Login Card -->
+<div class="glass-card rounded-xl p-8 shadow-2xl">
+<!-- Google SSO -->
+<button class="w-full flex items-center justify-center gap-3 py-3 px-4 border border-outline-variant hover:bg-surface-container-high transition-colors duration-300 rounded-lg group">
+<svg fill="none" height="20" viewbox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg">
+<path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"></path>
+<path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"></path>
+<path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"></path>
+<path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"></path>
+</svg>
+<span class="font-label-md text-on-surface group-hover:text-primary transition-colors">Sign in with Google</span>
+</button>
+<!-- Divider -->
+<div class="relative flex items-center py-8">
+<div class="flex-grow border-t border-white/5"></div>
+<span class="flex-shrink mx-4 font-label-sm text-outline uppercase tracking-widest">or</span>
+<div class="flex-grow border-t border-white/5"></div>
+</div>
+<!-- Form Fields -->
+<form class="space-y-6">
+<div>
+<label class="block font-label-sm text-outline mb-2 ml-1" for="email">Email</label>
+<input class="w-full bg-surface-container-lowest border border-white/10 rounded-lg py-3 px-4 text-on-surface focus:border-primary-container focus:ring-1 focus:ring-primary-container outline-none transition-all duration-300 placeholder:text-surface-variant" id="email" placeholder="name@company.com" type="email"/>
+</div>
+<div>
+<div class="flex justify-between items-center mb-2 px-1">
+<label class="font-label-sm text-outline" for="password">Password</label>
+<a class="font-label-sm text-primary-container hover:text-primary transition-colors duration-200" href="#">Forgot your password?</a>
+</div>
+<div class="relative">
+<input class="w-full bg-surface-container-lowest border border-white/10 rounded-lg py-3 px-4 text-on-surface focus:border-primary-container focus:ring-1 focus:ring-primary-container outline-none transition-all duration-300 placeholder:text-surface-variant" id="password" placeholder="••••••••" type="password"/>
+<button class="absolute right-4 top-1/2 -translate-y-1/2 text-outline hover:text-primary transition-colors" type="button">
+<span class="material-symbols-outlined text-[20px]" data-icon="visibility">visibility</span>
+</button>
+</div>
+</div>
+<!-- Primary CTA -->
+<button class="w-full bg-primary-container hover:bg-primary text-on-primary-container font-label-md py-4 rounded-lg transition-all duration-300 active:scale-95 shadow-[0_0_20px_rgba(16,185,129,0.15)] hover:shadow-[0_0_30px_rgba(16,185,129,0.25)]" type="submit">
+                    Sign in
+                </button>
+</form>
+</div>
+<!-- Footer -->
+<div class="mt-10 text-center">
+<p class="font-body-md text-outline">
+                Don't have an account? <a class="text-on-surface underline underline-offset-4 hover:text-primary-container transition-colors" href="#">Sign up</a>
+</p>
+</div>
+</main>
+<!-- App Footer Legal Links -->
+<footer class="fixed bottom-0 left-0 w-full px-margin-mobile md:px-margin-desktop py-8 flex flex-col md:flex-row justify-between items-center gap-4 border-t border-white/5 bg-transparent">
+<p class="font-label-sm text-outline">© 2024 ANALYXX AI. Precision Intelligence.</p>
+<div class="flex gap-6">
+<a class="font-label-sm text-outline hover:text-secondary-fixed transition-opacity" href="#">Privacy Policy</a>
+<a class="font-label-sm text-outline hover:text-secondary-fixed transition-opacity" href="#">Terms of Service</a>
+<a class="font-label-sm text-outline hover:text-secondary-fixed transition-opacity" href="#">Security</a>
+</div>
+</footer>
+</body></html>

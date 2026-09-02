@@ -1,0 +1,803 @@
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0; padding: 0; overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
+  overscroll-behavior-y: contain; /* Prevent accidental pull-to-refresh */
+}
+body.mobile-nav-locked { overflow: hidden !important; }
+
+/* ── Mobile-first: eliminate 300ms tap delay ── */
+a, button, [role="button"], input, select, textarea, label {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ── Theme System: CSS Variable Defaults (Analyxx Premium) ── */
+:root {
+  --primary: #10b981;
+  --primary-rgb: 16, 185, 129;
+  --secondary: #67D6D6;
+  --secondary-rgb: 103, 214, 214;
+  --bg: #050505;
+  --bg-rgb: 5, 5, 5;
+  --surface: #0B0F0F;
+  --surface-rgb: 11, 15, 15;
+  --text: #EBEBEB;
+  --text-rgb: 235, 235, 235;
+  --radius: 20px;
+  --font-family: var(--font-inter, 'Inter'), sans-serif;
+  --font-scale: 1;
+  --density: 1;
+  --glassmorphism: 1;
+  --shadows: 1;
+  --logo-filter: none;
+}
+
+/* Logo tinting per theme */
+.theme-logo {
+  filter: var(--logo-filter);
+  transition: filter 300ms ease;
+}
+
+/* Smooth theme transitions */
+html[data-theme-transitioning] * {
+  transition: background-color 250ms ease, color 250ms ease, border-color 250ms ease, box-shadow 250ms ease !important;
+}
+
+/* ── Premium Slanted Pro Badge (Analyxx Brand Style) ── */
+@keyframes badgeFadeIn {
+  from { opacity: 0; transform: skewX(-15deg) scale(0.8); }
+  to   { opacity: 1; transform: skewX(-15deg) scale(1); }
+}
+.analyxx-pro-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 3px 12px;
+  background: #020404; /* Dark matching Analyxx base */
+  border: 1.4px solid var(--primary); /* Emerald green border */
+  border-radius: 9px 2px 9px 2px; /* Rounded top-left/bottom-right, sharp others */
+  transform: skewX(-15deg); /* Slanted parallelogram container */
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.25), inset 0 0 4px rgba(16, 185, 129, 0.1);
+  height: 21px;
+  align-self: center;
+  margin-left: 8px;
+  vertical-align: middle;
+  transition: all 300ms cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+  cursor: pointer;
+  animation: badgeFadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.analyxx-pro-badge:hover {
+  border-color: var(--secondary); /* Smooth transition to Teal */
+  box-shadow: 0 0 14px rgba(103, 214, 214, 0.4), inset 0 0 5px rgba(103, 214, 214, 0.2);
+  transform: skewX(-15deg) scale(1.05); /* Slight micro-zoom animation */
+}
+
+.analyxx-pro-badge span {
+  font-family: 'Space Grotesk', var(--font-family), sans-serif;
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  background: linear-gradient(90deg, #10b981 0%, #67D6D6 100%); /* Emerald-to-Teal text gradient */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  display: block;
+  transform: skewX(15deg); /* Counter-skew text to keep it perfectly crisp and upright */
+  font-style: italic; /* Italic slant matching the badge container angle */
+  line-height: 1;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   MOBILE-ONLY OVERRIDES — Desktop stays completely untouched
+   Informed by Google Stitch "Editorial Intelligence" system
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── Mobile Nav Overlay (hidden on desktop) ── */
+.mobile-menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  color: var(--text);
+  -webkit-tap-highlight-color: transparent;
+  min-width: 44px;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+}
+
+.mobile-nav-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  background: rgb(var(--bg-rgb));
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  opacity: 0;
+  transition: opacity 300ms ease;
+  padding: 60px 24px env(safe-area-inset-bottom, 20px);
+  pointer-events: none;
+}
+.mobile-nav-overlay.open {
+  display: flex;
+  opacity: 1;
+  pointer-events: auto;
+}
+.mobile-nav-overlay a {
+  font-size: 20px;
+  font-weight: 500;
+  color: rgba(var(--text-rgb), 0.7);
+  text-decoration: none;
+  padding: 12px 24px;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 300ms, background 200ms;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: -0.01em;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 280px;
+}
+.mobile-nav-overlay a:active {
+  background: rgba(var(--primary-rgb), 0.08);
+  color: var(--primary);
+}
+.mobile-nav-overlay a:hover {
+  color: var(--primary);
+}
+.mobile-nav-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text);
+  font-size: 28px;
+  padding: 8px;
+  line-height: 1;
+  -webkit-tap-highlight-color: transparent;
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Tablet breakpoint (≤1024px) ── */
+@media (max-width: 1024px) {
+  /* Navbar: hide desktop links, show hamburger */
+  .desktop-nav-links { display: none !important; }
+  .mobile-menu-btn { display: flex !important; }
+
+  /* Hide auth buttons & theme customizer in navbar on tablet */
+  .nav-auth-buttons { display: none !important; }
+  .nav-theme-customizer { display: none !important; }
+  .nav-user-dropdown { display: none !important; }
+
+  /* Landing hero */
+  .hero-section {
+    grid-template-columns: 1fr !important;
+    gap: 40px !important;
+    min-height: auto !important;
+  }
+  .hero-mockup { display: none !important; }
+
+  /* Feature grid: 3-col → 2-col */
+  .feature-grid { grid-template-columns: 1fr 1fr !important; }
+
+  /* Pricing grid: 3-col → 1-col */
+  .pricing-grid {
+    grid-template-columns: 1fr !important;
+    max-width: 480px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+  .pricing-grid > div { transform: none !important; }
+
+  /* About mission: 2-col → 1-col */
+  .about-mission-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
+  .about-values-grid { grid-template-columns: 1fr 1fr !important; }
+  .about-team-grid { grid-template-columns: 1fr !important; }
+
+  /* Footer */
+  .footer-grid { grid-template-columns: 1fr 1fr 1fr !important; }
+  .footer-brand-col { grid-column: 1 / -1 !important; }
+
+  /* Library: exam grid 4-col → 2-col */
+  .lib-exam-grid { grid-template-columns: repeat(2, 1fr) !important; }
+  .lib-year-grid { grid-template-columns: repeat(2, 1fr) !important; }
+  .lib-calendar-grid { grid-template-columns: repeat(3, 1fr) !important; }
+  .lib-subject-grid { grid-template-columns: repeat(2, 1fr) !important; }
+  .lib-branch-grid { grid-template-columns: repeat(2, 1fr) !important; }
+}
+
+/* ── Phone breakpoint (≤640px) — Stitch "Editorial Intelligence" polish ── */
+@media (max-width: 640px) {
+
+  /* ═════ UNIVERSAL iOS ZOOM PREVENTION ═════
+     All input elements must be ≥16px to prevent Safari auto-zoom on focus */
+  input, select, textarea {
+    font-size: 16px !important;
+  }
+
+  /* ═════ GLOBAL MOBILE READABLE TEXT ═════
+     UX Pro Max: Minimum 16px body text on mobile (WCAG AA) */
+  body {
+    font-size: 16px !important;
+  }
+  p, li, td, th, span, label, div {
+    /* Don't force font-size on all elements — only enforce minimums via specific rules below */
+  }
+
+  /* ═════ GLOBAL MOBILE TOUCH TARGETS ═════
+     All interactive elements must be at least 44×44px with 8px gap */
+  button, a, [role="button"] {
+    min-height: 44px;
+  }
+
+  /* ═════ NAVBAR ═════
+     Stitch principle: "Don't crowd the edges." Only logo + hamburger.
+     ThemeCustomizer, user dropdown, auth buttons → hidden, available via menu */
+  .nav-header {
+    padding: 12px 16px !important;
+  }
+  .nav-auth-buttons { display: none !important; }
+  .nav-theme-customizer { display: none !important; }
+  .nav-user-dropdown { display: none !important; }
+
+  /* Logo text smaller on phone */
+  .nav-logo-text { font-size: 16px !important; }
+  .nav-logo-icon { width: 32px !important; height: 32px !important; border-radius: 8px !important; }
+
+  /* ═════ HERO ═════
+     Stitch: "extreme whitespace", "full-width pill CTAs" */
+  .hero-section {
+    padding: 100px 20px 48px !important;
+    text-align: center !important;
+  }
+  .hero-headline {
+    font-size: clamp(32px, 9vw, 48px) !important;
+    line-height: 1.1 !important;
+    letter-spacing: -0.03em !important;
+  }
+  .hero-subtext {
+    font-size: 16px !important;
+    line-height: 1.7 !important;
+    max-width: 100% !important;
+  }
+  .hero-cta {
+    width: 100% !important;
+    padding: 16px 32px !important;
+    font-size: 16px !important;
+    border-radius: 9999px !important;
+    text-align: center !important;
+    justify-content: center !important;
+  }
+  .hero-cta-row {
+    flex-direction: column !important;
+    gap: 12px !important;
+  }
+  .hero-badge {
+    font-size: 11px !important;
+    letter-spacing: 0.15em !important;
+  }
+
+  /* Hero mockup floating badges — contain within viewport */
+  .hero-mockup {
+    margin: 0 16px !important;
+    overflow: hidden !important;
+  }
+
+  /* ═════ SECTIONS — universal padding ═════
+     Stitch: "minimum page gutter of 1rem on mobile" (16px) */
+  .feature-section { padding: 48px 20px !important; }
+  .feature-grid { grid-template-columns: 1fr !important; }
+
+  /* Feature cards — Stitch: tonal depth via bg shifts, not borders */
+  .feature-section .feature-grid > div {
+    padding: 24px 20px !important;
+    border-radius: 16px !important;
+  }
+  /* Feature card body text: enforce 16px minimum */
+  .feature-section .feature-grid > div p {
+    font-size: 16px !important;
+    line-height: 1.65 !important;
+  }
+  .feature-section .feature-grid > div h3 {
+    font-size: 22px !important;
+  }
+
+  /* Section label captions ("Features", "Performance Data", etc.) */
+  .font-grotesk[style*="uppercase"] {
+    font-size: 11px !important;
+  }
+
+  /* Benchmark table: simplified for mobile */
+  .benchmark-section { padding: 0 20px 48px !important; }
+  .benchmark-header,
+  .benchmark-row {
+    grid-template-columns: 1.5fr 1fr !important;
+    padding: 14px 16px !important;
+  }
+  /* Benchmark metric text — enforce readability */
+  .benchmark-row span {
+    font-size: 15px !important;
+  }
+  .benchmark-header span {
+    font-size: 11px !important;
+  }
+  .benchmark-col-vs,
+  .benchmark-col-status,
+  .benchmark-header-vs,
+  .benchmark-header-status { display: none !important; }
+
+  /* CTA section */
+  .cta-section { padding: 48px 20px !important; }
+  .cta-section h2 {
+    font-size: clamp(36px, 9vw, 56px) !important;
+  }
+  .cta-section a,
+  .cta-section button {
+    width: 100% !important;
+  }
+
+  /* ═════ PRICING ═════
+     Stitch: full-width stacked cards, compact pill toggle, no scale transforms */
+  .pricing-section { padding: 0 16px 48px !important; }
+  .pricing-section h2 {
+    font-size: clamp(28px, 7vw, 40px) !important;
+  }
+
+  /* Toggle: compact pill for mobile */
+  .pricing-toggle {
+    display: inline-grid !important;
+    width: auto !important;
+    max-width: 100% !important;
+  }
+  .pricing-toggle button {
+    padding: 10px 14px !important;
+    font-size: 13px !important;
+  }
+  /* "SAVE 17%" badge — readable on mobile */
+  .pricing-toggle button span {
+    font-size: 9px !important;
+    margin-left: 4px !important;
+    padding: 2px 6px !important;
+  }
+
+  /* Pricing grid → single column, no scale */
+  .pricing-grid {
+    grid-template-columns: 1fr !important;
+    max-width: 100% !important;
+    gap: 16px !important;
+  }
+  .pricing-grid > div {
+    transform: none !important;
+  }
+
+  /* Pricing cards: tighter padding, smaller radius */
+  .pricing-card {
+    padding: 28px 24px !important;
+    border-radius: 20px !important;
+  }
+
+  /* Price font: scale down */
+  .pricing-card .font-serif {
+    font-size: 36px !important;
+  }
+
+  /* Feature list: readable on mobile (minimum 15px) */
+  .pricing-card ul li {
+    font-size: 15px !important;
+    margin-bottom: 10px !important;
+    line-height: 1.5 !important;
+  }
+
+  /* CTA buttons: full-width pill, readable text */
+  .pricing-cta {
+    padding: 16px !important;
+    font-size: 16px !important;
+    border-radius: 9999px !important;
+    width: 100% !important;
+    font-weight: 600 !important;
+  }
+
+  /* Section titles — smaller on mobile */
+  .section-title {
+    font-size: clamp(28px, 7vw, 40px) !important;
+  }
+
+  /* ═════ FOOTER ═════
+     Stitch: stack footer into compact 2-col grid */
+  .footer-wrap { padding: 40px 20px 24px !important; }
+  .footer-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 24px !important;
+  }
+  .footer-bottom {
+    flex-direction: column !important;
+    text-align: center !important;
+    gap: 12px !important;
+  }
+
+  /* ═════ ABOUT PAGE ═════ */
+  .about-hero { padding: 120px 20px 48px !important; }
+  .about-hero h1 {
+    font-size: clamp(32px, 8vw, 52px) !important;
+  }
+  .about-section { padding: 0 20px 48px !important; }
+  .about-section-padded { padding: 48px 20px 48px !important; }
+  .about-values-grid { grid-template-columns: 1fr !important; }
+  .about-mission-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
+  .about-team-grid { grid-template-columns: 1fr !important; }
+  .about-card { padding: 24px !important; border-radius: 16px !important; }
+  .team-card { padding: 24px !important; border-radius: 16px !important; }
+  .about-cta-section { padding: 0 20px 48px !important; }
+
+  /* ═════ BILLING & ANALYSIS — tighter padding ═════ */
+  .page-header-nav { padding: 12px 16px !important; }
+  .page-content { padding: 32px 16px !important; }
+
+  /* ═════ PROFILE — single-column form ═════ */
+  .profile-field-grid { grid-template-columns: 1fr !important; }
+  .profile-field-grid > div { grid-column: auto !important; }
+
+  /* ═════ LIBRARY PAGE ═════ */
+  .lib-hero { padding: 100px 20px 40px !important; }
+  .lib-hero h1 {
+    font-size: clamp(28px, 8vw, 48px) !important;
+  }
+  .lib-section { padding-left: 20px !important; padding-right: 20px !important; }
+  .lib-exam-grid { grid-template-columns: 1fr !important; }
+  .lib-branch-grid { grid-template-columns: 1fr !important; }
+  .lib-year-grid { grid-template-columns: repeat(2, 1fr) !important; }
+  .lib-subject-grid { grid-template-columns: 1fr !important; }
+  .lib-calendar-grid { grid-template-columns: repeat(3, 1fr) !important; }
+
+  /* Library section headers — stack breadcrumb + back button */
+  .lib-section-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 16px !important;
+  }
+  .lib-section-header h2 {
+    font-size: clamp(20px, 6vw, 32px) !important;
+  }
+
+  /* Exam cards — tighter on mobile */
+  .exam-card {
+    padding: 20px 16px !important;
+  }
+
+  /* ═════ AUTH PAGES (Login / Register) ═════
+     Stitch: pill inputs, generous spacing, full-width CTAs */
+  .input-field {
+    border-radius: 9999px !important;
+    padding: 14px 20px !important;
+    font-size: 16px !important; /* prevents iOS zoom */
+    background: rgba(255,255,255,0.04) !important;
+    border-color: rgba(255,255,255,0.06) !important;
+  }
+  .submit-btn {
+    border-radius: 9999px !important;
+    padding: 16px !important;
+    font-size: 16px !important;
+  }
+  .google-btn {
+    border-radius: 9999px !important;
+    padding: 16px !important;
+    font-size: 16px !important;
+  }
+  .auth-card {
+    padding: 24px 20px !important;
+    border-radius: 20px !important;
+    border-color: rgba(255,255,255,0.05) !important;
+  }
+  .auth-card .font-serif {
+    font-size: 28px !important;
+  }
+  .auth-heading {
+    font-size: clamp(28px, 7vw, 36px) !important;
+  }
+
+  /* Login / Register page-specific overrides */
+  .lp-google {
+    font-size: 16px !important;
+    padding: 16px !important;
+    min-height: 52px !important;
+    border-radius: 12px !important;
+  }
+  .lp-submit {
+    font-size: 16px !important;
+    padding: 16px !important;
+    min-height: 52px !important;
+    border-radius: 12px !important;
+  }
+  .lp-input {
+    font-size: 16px !important;
+    padding: 14px 16px !important;
+    min-height: 48px !important;
+  }
+  .lp-label {
+    font-size: 13px !important;
+  }
+  .lp-forgot {
+    font-size: 13px !important;
+    min-height: 44px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+  }
+  .lp-eye {
+    min-width: 44px !important;
+    min-height: 44px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  .lp-footer {
+    font-size: 16px !important;
+  }
+  .lp-legal {
+    font-size: 13px !important;
+    padding: 20px 16px !important;
+  }
+  .lp-heading p {
+    font-size: 16px !important;
+  }
+  .lp-error {
+    font-size: 15px !important;
+  }
+  .lp-divider span {
+    font-size: 12px !important;
+  }
+
+  /* ═════ BILLING PAGE ═════
+     Stitch: hide extra nav links on mobile, compact padding */
+  .billing-nav-links {
+    display: none !important;
+  }
+  .glass-card {
+    padding: 20px !important;
+    border-radius: 16px !important;
+  }
+  .upgrade-btn {
+    width: 100% !important;
+    padding: 14px !important;
+  }
+
+  /* ═════ ANALYSIS PAGE ═════ */
+  .analysis-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .analysis-card {
+    padding: 20px !important;
+    border-radius: 16px !important;
+  }
+
+  /* ═════ MOBILE NAV OVERLAY polish ═════ */
+  .mobile-nav-overlay {
+    padding: 80px 24px calc(24px + env(safe-area-inset-bottom)) !important;
+    gap: 4px !important;
+    justify-content: flex-start !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+  .mobile-nav-overlay a {
+    font-size: 18px !important;
+    padding: 14px 24px !important;
+    min-height: 48px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 12px !important;
+    width: 100% !important;
+    max-width: 300px !important;
+  }
+
+  /* ═════ PERFORMANCE DATA / STATS ROW ═════
+     Stitch: 2×2 grid instead of awkward flex-wrap on small screens */
+  .stats-row {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 20px !important;
+    justify-items: center !important;
+  }
+  .stats-row > div {
+    text-align: center !important;
+  }
+
+  /* ═════ PRICING TOGGLE — readable on mobile ═════ */
+  .pricing-toggle {
+    width: 100% !important;
+    max-width: 340px !important;
+  }
+  .pricing-toggle button {
+    padding: 12px 10px !important;
+    font-size: 13px !important;
+    min-height: 48px !important;
+  }
+
+  /* ═════ UPLOAD / DASHBOARD PAGE ═════ */
+  /* Cross-year analysis modal: fit mobile viewport */
+  .cy-modal {
+    width: calc(100vw - 32px) !important;
+    max-width: 100% !important;
+    max-height: 80vh !important;
+    margin: auto !important;
+    border-radius: 20px !important;
+  }
+  .cy-modal-inner {
+    max-height: 65vh !important;
+    overflow-y: auto !important;
+  }
+
+  /* Chat input bar: iOS safe area */
+  .chat-input-bar {
+    padding-bottom: calc(12px + env(safe-area-inset-bottom)) !important;
+  }
+
+  /* Sidebar overlay backdrop */
+  .sidebar-backdrop {
+    position: fixed !important;
+    inset: 0 !important;
+    background: rgba(0,0,0,0.5) !important;
+    z-index: 65 !important;
+  }
+
+  /* Upload action chips: horizontal scroll */
+  .action-chips-row {
+    overflow-x: auto !important;
+    flex-wrap: nowrap !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+    padding-bottom: 4px !important;
+  }
+  .action-chips-row::-webkit-scrollbar { display: none; }
+
+  /* User bubble: wider on mobile */
+  .user-bubble {
+    max-width: 88% !important;
+  }
+  .assistant-msg {
+    max-width: 95% !important;
+  }
+
+  /* ═════ MARKDOWN TABLES — scrollable on mobile ═════ */
+  .ai-response table,
+  .an-markdown table {
+    display: block !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    white-space: nowrap !important;
+  }
+
+  /* Hide ThemeCustomizer on narrow screens */
+  .nav-theme-customizer {
+    display: none !important;
+  }
+
+  /* Homepage SEO grid: single column + readable text */
+  .seo-grid {
+    grid-template-columns: 1fr !important;
+    gap: 24px !important;
+  }
+  .seo-grid p {
+    font-size: 16px !important;
+    line-height: 1.75 !important;
+  }
+  .seo-grid h2 {
+    font-size: 22px !important;
+  }
+
+  /* Library section header: stack on mobile */
+  .lib-section-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 16px !important;
+  }
+
+  /* ═════ TICKER — readable on mobile ═════ */
+  .ticker-track span span {
+    font-size: 11px !important;
+    padding: 0 24px !important;
+  }
+
+  /* ═════ SOCIAL PROOF — readable on mobile ═════ */
+  .social-icon {
+    min-width: 44px !important;
+    min-height: 44px !important;
+  }
+
+  /* ═════ SPOTLIGHT CARDS — mobile padding ═════ */
+  .spotlight-card {
+    padding: 28px 20px !important;
+    border-radius: 20px !important;
+  }
+
+  /* ═════ FOOTER — readable text ═════ */
+  .footer-grid a {
+    font-size: 15px !important;
+    line-height: 2 !important;
+  }
+  .footer-bottom span,
+  .footer-bottom a {
+    font-size: 14px !important;
+  }
+
+  /* ═════ CARD ICON — proper spacing ═════ */
+  .card-icon {
+    width: 48px !important;
+    height: 48px !important;
+    margin-bottom: 20px !important;
+  }
+
+  /* ═════ GHOST/EMERALD BUTTONS — full width ═════ */
+  .emerald-btn,
+  .ghost-btn {
+    font-size: 16px !important;
+    padding: 16px 28px !important;
+    width: 100% !important;
+    text-align: center !important;
+    justify-content: center !important;
+  }
+
+  /* ═════ WHATSAPP BUTTON — readable ═════ */
+  .whatsapp-btn {
+    font-size: 15px !important;
+    padding: 14px 20px !important;
+  }
+
+  /* ═════ DROPDOWN ITEMS — touch-friendly ═════ */
+  .dropdown-item {
+    min-height: 44px !important;
+    font-size: 15px !important;
+    padding: 12px 16px !important;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════
+   ASK CLARITY — Navbar Button (matches nav-link style)
+   ══════════════════════════════════════════════════════════ */
+.ask-clarity-nav-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  letter-spacing: inherit;
+  line-height: inherit;
+}
+
+.ask-clarity-nav-btn sup {
+  font-family: var(--font-newsreader, 'Newsreader'), Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 0.85em;
+  vertical-align: super;
+  line-height: 0;
+  margin-right: 1px;
+}
+
+/* Hide help chat when clarity sidebar is open */
+body.clarity-sidebar-open .help-chat-fab,
+body.clarity-sidebar-open #help-chat-trigger,
+body.clarity-sidebar-open #help-chat-panel {
+  display: none !important;
+}

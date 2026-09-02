@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Analyxx Knowledge Graph</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a0f;color:#e0e0e0;font-family:'Inter',system-ui,sans-serif;overflow:hidden;height:100vh}
+#controls{position:fixed;top:16px;left:16px;z-index:10;display:flex;gap:8px;flex-wrap:wrap;max-width:400px}
+.btn{padding:6px 14px;border-radius:20px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:#ccc;font-size:12px;cursor:pointer;backdrop-filter:blur(12px);transition:.2s}
+.btn:hover,.btn.active{background:rgba(255,255,255,.15);color:#fff;border-color:rgba(255,255,255,.3)}
+#info{position:fixed;bottom:16px;left:16px;z-index:10;background:rgba(10,10,15,.85);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:16px 20px;max-width:380px;font-size:13px;line-height:1.6;display:none}
+#info h3{font-size:15px;margin-bottom:6px;color:#a78bfa}
+#info .tag{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;margin-right:4px;background:rgba(167,139,250,.15);color:#a78bfa}
+#legend{position:fixed;top:16px;right:16px;z-index:10;background:rgba(10,10,15,.85);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:14px 18px;font-size:12px}
+#legend h4{margin-bottom:8px;color:#888;font-size:11px;text-transform:uppercase;letter-spacing:1px}
+.legend-item{display:flex;align-items:center;gap:8px;margin-bottom:5px}
+.legend-dot{width:10px;height:10px;border-radius:50%}
+#stats{position:fixed;bottom:16px;right:16px;z-index:10;font-size:11px;color:#555}
+canvas{display:block}
+</style>
+</head>
+<body>
+<div id="controls">
+  <button class="btn active" onclick="filterCommunity(-1)">All</button>
+  <button class="btn" onclick="filterCommunity(0)">WhatsApp Bot</button>
+  <button class="btn" onclick="filterCommunity(1)">Backend Auth</button>
+  <button class="btn" onclick="filterCommunity(2)">Frontend Pages</button>
+  <button class="btn" onclick="filterCommunity(3)">Auth UI</button>
+  <button class="btn" onclick="filterCommunity(4)">Papers API</button>
+  <button class="btn" onclick="filterCommunity(5)">Analyzer</button>
+  <button class="btn" onclick="filterCommunity(6)">Upload Scripts</button>
+  <button class="btn" onclick="filterCommunity(7)">Upload UI</button>
+  <button class="btn" onclick="filterCommunity(10)">Theme</button>
+</div>
+<div id="legend">
+  <h4>Communities</h4>
+  <div class="legend-item"><div class="legend-dot" style="background:#a78bfa"></div>WhatsApp Bot</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#f472b6"></div>Backend Auth</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#38bdf8"></div>Frontend Pages</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#34d399"></div>Auth UI / Sessions</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#fb923c"></div>Papers API</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#facc15"></div>Analyzer</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#94a3b8"></div>Upload Scripts</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#c084fc"></div>Theme System</div>
+</div>
+<div id="info"></div>
+<div id="stats">216 nodes · 299 edges · 39 communities</div>
+<canvas id="c"></canvas>
+
+<script>
+const COLORS={0:'#a78bfa',1:'#f472b6',2:'#38bdf8',3:'#34d399',4:'#fb923c',5:'#facc15',6:'#94a3b8',7:'#60a5fa',8:'#94a3b8',9:'#94a3b8',10:'#c084fc'};
+const defaultColor='#555';
+
+const nodes=[
+  // Community 0 - WhatsApp Bot
+  {id:'handleInteractiveReply()',c:0,r:18},{id:'handleMessage()',c:0,r:15},{id:'sendText()',c:0,r:11},{id:'sendList()',c:0,r:9},
+  {id:'sendButtons()',c:0,r:6},{id:'sendDocument()',c:0,r:4},{id:'_send()',c:0,r:6},{id:'splitMessage()',c:0,r:3},
+  {id:'handleAnalysis()',c:0,r:6},{id:'buildAnalysisUrl()',c:0,r:3},{id:'handlePyqRequest()',c:0,r:7},{id:'handleRtuPyqRequest()',c:0,r:7},
+  {id:'sendExamMenu()',c:0,r:5},{id:'sendRtuBranchMenu()',c:0,r:5},{id:'sendRtuYearMenu()',c:0,r:5},{id:'sendRtuSubjectMenu()',c:0,r:5},
+  {id:'sendRtuCalendarYearMenu()',c:0,r:4},{id:'sendSubjectMenu()',c:0,r:5},{id:'sendYearMenu()',c:0,r:5},{id:'sendPaperActions()',c:0,r:3},
+  {id:'isVerifiedUser()',c:0,r:4},{id:'linkByEmail()',c:0,r:4},{id:'looksLikeEmail()',c:0,r:3},{id:'getRtuSubjects()',c:0,r:3},
+  {id:'classifyIntent()',c:0,r:3},
+  // Community 1 - Backend Auth
+  {id:'User',c:1,r:14},{id:'PaperRequest',c:1,r:11},{id:'get_current_user()',c:1,r:5},{id:'get_current_user_id()',c:1,r:4},
+  {id:'get_me()',c:1,r:3},{id:'get_profile()',c:1,r:3},{id:'update_profile()',c:1,r:3},{id:'create_paper_request()',c:1,r:4},
+  {id:'get_paper_requests()',c:1,r:3},{id:'ProfileUpdateRequest',c:1,r:3},{id:'PaperRequestCreate',c:1,r:4},{id:'BaseModel',c:1,r:3},
+  // Community 2 - Frontend Pages
+  {id:'Homepage',c:2,r:5},{id:'AnalysisPage',c:2,r:5},{id:'LibraryPage',c:2,r:6},{id:'ResultsPage',c:2,r:5},
+  {id:'DashboardPage',c:2,r:4},{id:'AboutPage',c:2,r:3},{id:'generateAnalysis()',c:2,r:4},{id:'generateYears()',c:2,r:4},
+  {id:'canAccess()',c:2,r:3},{id:'getAccessToken()',c:2,r:4},{id:'getCurrentUser()',c:2,r:4},{id:'signOut()',c:2,r:3},
+  // Community 3 - Auth UI
+  {id:'LoginPage',c:3,r:5},{id:'RegisterPage',c:3,r:4},{id:'handleLogin()',c:3,r:4},{id:'handleRegister()',c:3,r:4},
+  {id:'handleGoogleLogin()',c:3,r:4},{id:'SessionStore',c:3,r:7},
+  // Community 4 - Papers API
+  {id:'Paper',c:4,r:7},{id:'upload_paper()',c:4,r:5},{id:'list_papers()',c:4,r:4},{id:'get_paper()',c:4,r:4},
+  {id:'generate_ai_summary()',c:4,r:4},{id:'analyze_image()',c:4,r:4},{id:'_sanitize_filename()',c:4,r:3},{id:'_sanitize_prompt_input()',c:4,r:3},
+  // Community 5 - Analyzer
+  {id:'analyze_paper()',c:5,r:6},{id:'extract_text_from_pdf()',c:5,r:4},{id:'classify_topics()',c:5,r:4},{id:'get_confidence()',c:5,r:3},
+  // Community 7 - Upload UI
+  {id:'UploadPage',c:7,r:5},{id:'handleSubmit()',c:7,r:4},{id:'handleFiles()',c:7,r:4},{id:'handleDrop()',c:7,r:3},{id:'detectPaperYear()',c:7,r:3},
+  // Community 10 - Theme
+  {id:'ThemeProvider()',c:10,r:5},{id:'useTheme()',c:10,r:4},{id:'hexToRgb()',c:10,r:3},{id:'lightenHex()',c:10,r:3},{id:'getFontFamily()',c:10,r:3},
+  // Community 6 - Upload Scripts
+  {id:'main()',c:6,r:7},{id:'parse_sem_folder()',c:6,r:3},{id:'parse_pdf_filename()',c:6,r:3},{id:'ensure_bucket()',c:6,r:4},{id:'upload_file()',c:6,r:4},
+];
+
+const edges=[
+  // handleInteractiveReply calls
+  {s:'handleInteractiveReply()',t:'sendText()',tp:'calls'},{s:'handleInteractiveReply()',t:'handleAnalysis()',tp:'calls'},
+  {s:'handleInteractiveReply()',t:'handlePyqRequest()',tp:'calls'},{s:'handleInteractiveReply()',t:'handleRtuPyqRequest()',tp:'calls'},
+  {s:'handleInteractiveReply()',t:'handleMessage()',tp:'calls'},{s:'handleInteractiveReply()',t:'sendExamMenu()',tp:'calls'},
+  {s:'handleInteractiveReply()',t:'sendRtuBranchMenu()',tp:'calls'},{s:'handleInteractiveReply()',t:'sendRtuYearMenu()',tp:'calls'},
+  {s:'handleInteractiveReply()',t:'sendRtuSubjectMenu()',tp:'calls'},{s:'handleInteractiveReply()',t:'sendRtuCalendarYearMenu()',tp:'calls'},
+  {s:'handleInteractiveReply()',t:'sendSubjectMenu()',tp:'calls'},{s:'handleInteractiveReply()',t:'sendYearMenu()',tp:'calls'},
+  {s:'handleInteractiveReply()',t:'getRtuSubjects()',tp:'calls'},
+  // handleMessage calls
+  {s:'handleMessage()',t:'isVerifiedUser()',tp:'calls'},{s:'handleMessage()',t:'linkByEmail()',tp:'calls'},
+  {s:'handleMessage()',t:'looksLikeEmail()',tp:'calls'},{s:'handleMessage()',t:'sendText()',tp:'calls'},
+  {s:'handleMessage()',t:'classifyIntent()',tp:'calls'},{s:'handleMessage()',t:'handleAnalysis()',tp:'calls'},
+  {s:'handleMessage()',t:'handlePyqRequest()',tp:'calls'},{s:'handleMessage()',t:'sendExamMenu()',tp:'calls'},
+  {s:'handleMessage()',t:'sendRtuBranchMenu()',tp:'calls'},{s:'handleMessage()',t:'sendRtuYearMenu()',tp:'calls'},
+  {s:'handleMessage()',t:'sendSubjectMenu()',tp:'calls'},{s:'handleMessage()',t:'sendYearMenu()',tp:'calls'},
+  // sendText
+  {s:'sendText()',t:'splitMessage()',tp:'calls'},{s:'sendText()',t:'_send()',tp:'calls'},
+  // sendList
+  {s:'sendList()',t:'_send()',tp:'calls'},{s:'sendExamMenu()',t:'sendList()',tp:'calls'},
+  {s:'sendRtuBranchMenu()',t:'sendList()',tp:'calls'},{s:'sendRtuYearMenu()',t:'sendList()',tp:'calls'},
+  {s:'sendRtuSubjectMenu()',t:'sendList()',tp:'calls'},{s:'sendSubjectMenu()',t:'sendList()',tp:'calls'},
+  {s:'sendYearMenu()',t:'sendList()',tp:'calls'},
+  // handleAnalysis
+  {s:'handleAnalysis()',t:'sendText()',tp:'calls'},{s:'handleAnalysis()',t:'sendButtons()',tp:'calls'},
+  {s:'handleAnalysis()',t:'buildAnalysisUrl()',tp:'calls'},
+  // handlePyqRequest
+  {s:'handlePyqRequest()',t:'sendText()',tp:'calls'},{s:'handlePyqRequest()',t:'sendButtons()',tp:'calls'},
+  {s:'handlePyqRequest()',t:'sendDocument()',tp:'calls'},
+  // sendButtons
+  {s:'sendButtons()',t:'_send()',tp:'calls'},
+  // Backend auth
+  {s:'get_current_user()',t:'get_current_user_id()',tp:'calls'},{s:'get_current_user()',t:'User',tp:'calls'},
+  {s:'create_paper_request()',t:'PaperRequest',tp:'uses'},{s:'create_paper_request()',t:'User',tp:'uses'},
+  {s:'PaperRequestCreate',t:'BaseModel',tp:'inherits'},{s:'PaperRequestCreate',t:'User',tp:'uses'},
+  {s:'PaperRequestCreate',t:'PaperRequest',tp:'uses'},{s:'get_paper_requests()',t:'PaperRequest',tp:'uses'},
+  {s:'get_me()',t:'User',tp:'uses'},{s:'get_profile()',t:'User',tp:'uses'},{s:'update_profile()',t:'User',tp:'uses'},
+  // Analyzer
+  {s:'analyze_paper()',t:'extract_text_from_pdf()',tp:'calls'},{s:'analyze_paper()',t:'classify_topics()',tp:'calls'},
+  {s:'analyze_paper()',t:'upload_paper()',tp:'calls'},
+  // Papers API
+  {s:'upload_paper()',t:'Paper',tp:'uses'},{s:'list_papers()',t:'Paper',tp:'uses'},{s:'get_paper()',t:'Paper',tp:'uses'},
+  {s:'generate_ai_summary()',t:'Paper',tp:'uses'},{s:'analyze_image()',t:'Paper',tp:'uses'},
+  // Frontend auth
+  {s:'LoginPage',t:'handleLogin()',tp:'contains'},{s:'LoginPage',t:'handleGoogleLogin()',tp:'contains'},
+  {s:'RegisterPage',t:'handleRegister()',tp:'contains'},
+  {s:'DashboardPage',t:'signOut()',tp:'calls'},
+  // Upload UI
+  {s:'UploadPage',t:'handleSubmit()',tp:'contains'},{s:'UploadPage',t:'handleFiles()',tp:'contains'},
+  {s:'UploadPage',t:'handleDrop()',tp:'contains'},{s:'UploadPage',t:'detectPaperYear()',tp:'contains'},
+  // main
+  {s:'main()',t:'parse_sem_folder()',tp:'calls'},{s:'main()',t:'parse_pdf_filename()',tp:'calls'},
+  {s:'main()',t:'ensure_bucket()',tp:'calls'},{s:'main()',t:'upload_file()',tp:'calls'},
+  // SessionStore
+  {s:'handleInteractiveReply()',t:'SessionStore',tp:'calls'},{s:'handleMessage()',t:'SessionStore',tp:'calls'},
+  // Theme
+  {s:'ThemeProvider()',t:'hexToRgb()',tp:'calls'},{s:'ThemeProvider()',t:'lightenHex()',tp:'calls'},
+  {s:'ThemeProvider()',t:'getFontFamily()',tp:'calls'},
+  // Cross-community
+  {s:'AnalysisPage',t:'generateAnalysis()',tp:'contains'},{s:'LibraryPage',t:'generateYears()',tp:'contains'},
+  {s:'LibraryPage',t:'canAccess()',tp:'contains'},
+];
+
+// Build index
+const nodeMap={};nodes.forEach((n,i)=>{n.idx=i;nodeMap[n.id]=n});
+
+// Physics state
+let W,H;
+const canvas=document.getElementById('c');
+const ctx=canvas.getContext('2d');
+function resize(){W=canvas.width=innerWidth;H=canvas.height=innerHeight}
+resize();window.addEventListener('resize',resize);
+
+// Init positions
+nodes.forEach(n=>{n.x=W/2+(Math.random()-.5)*600;n.y=H/2+(Math.random()-.5)*400;n.vx=0;n.vy=0});
+
+let activeComm=-1;
+let hoveredNode=null;
+let dragNode=null;
+let camX=0,camY=0,camZ=1;
+
+function filterCommunity(c){
+  activeComm=c;
+  document.querySelectorAll('.btn').forEach(b=>b.classList.remove('active'));
+  event.target.classList.add('active');
+}
+
+function getColor(n){return COLORS[n.c]||defaultColor}
+
+function tick(){
+  // Force-directed layout
+  const alpha=0.3;
+  // Repulsion
+  for(let i=0;i<nodes.length;i++){
+    for(let j=i+1;j<nodes.length;j++){
+      let dx=nodes[j].x-nodes[i].x,dy=nodes[j].y-nodes[i].y;
+      let d=Math.sqrt(dx*dx+dy*dy)||1;
+      let f=800/(d*d);
+      // Same community: less repulsion
+      if(nodes[i].c===nodes[j].c)f*=0.5;
+      nodes[i].vx-=f*dx/d;nodes[i].vy-=f*dy/d;
+      nodes[j].vx+=f*dx/d;nodes[j].vy+=f*dy/d;
+    }
+  }
+  // Attraction along edges
+  edges.forEach(e=>{
+    const a=nodeMap[e.s],b=nodeMap[e.t];
+    if(!a||!b)return;
+    let dx=b.x-a.x,dy=b.y-a.y;
+    let d=Math.sqrt(dx*dx+dy*dy)||1;
+    let f=(d-120)*0.005;
+    a.vx+=f*dx/d;a.vy+=f*dy/d;
+    b.vx-=f*dx/d;b.vy-=f*dy/d;
+  });
+  // Community clustering
+  const centers={};const counts={};
+  nodes.forEach(n=>{
+    if(!centers[n.c]){centers[n.c]={x:0,y:0};counts[n.c]=0}
+    centers[n.c].x+=n.x;centers[n.c].y+=n.y;counts[n.c]++;
+  });
+  Object.keys(centers).forEach(c=>{centers[c].x/=counts[c];centers[c].y/=counts[c]});
+  nodes.forEach(n=>{
+    const cx=centers[n.c].x,cy=centers[n.c].y;
+    n.vx+=(cx-n.x)*0.002;n.vy+=(cy-n.y)*0.002;
+  });
+  // Center gravity
+  nodes.forEach(n=>{
+    n.vx+=(W/2-n.x)*0.0005;n.vy+=(H/2-n.y)*0.0005;
+  });
+  // Apply velocity
+  nodes.forEach(n=>{
+    if(n===dragNode)return;
+    n.vx*=0.85;n.vy*=0.85;
+    n.x+=n.vx*alpha;n.y+=n.vy*alpha;
+  });
+}
+
+function draw(){
+  ctx.clearRect(0,0,W,H);
+  ctx.save();
+  ctx.translate(camX,camY);
+  ctx.scale(camZ,camZ);
+
+  const dimmed=activeComm!==-1;
+
+  // Draw edges
+  edges.forEach(e=>{
+    const a=nodeMap[e.s],b=nodeMap[e.t];
+    if(!a||!b)return;
+    const visible=!dimmed||(a.c===activeComm||b.c===activeComm);
+    const isHoverEdge=hoveredNode&&(e.s===hoveredNode.id||e.t===hoveredNode.id);
+    ctx.beginPath();
+    ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);
+    if(isHoverEdge){ctx.strokeStyle='rgba(167,139,250,0.6)';ctx.lineWidth=1.5}
+    else if(visible){ctx.strokeStyle='rgba(255,255,255,0.06)';ctx.lineWidth=0.5}
+    else{ctx.strokeStyle='rgba(255,255,255,0.015)';ctx.lineWidth=0.3}
+    ctx.stroke();
+  });
+
+  // Draw nodes
+  nodes.forEach(n=>{
+    const visible=!dimmed||n.c===activeComm;
+    const isHovered=hoveredNode===n;
+    const isNeighbor=hoveredNode&&edges.some(e=>(e.s===hoveredNode.id&&e.t===n.id)||(e.t===hoveredNode.id&&e.s===n.id));
+    const radius=Math.max(n.r*0.55,3);
+    const col=getColor(n);
+
+    ctx.beginPath();
+    ctx.arc(n.x,n.y,radius,0,Math.PI*2);
+    if(isHovered){
+      ctx.fillStyle=col;ctx.shadowColor=col;ctx.shadowBlur=20;
+    }else if(isNeighbor){
+      ctx.fillStyle=col;ctx.shadowColor=col;ctx.shadowBlur=8;
+    }else if(visible){
+      ctx.fillStyle=col+'99';ctx.shadowBlur=0;
+    }else{
+      ctx.fillStyle=col+'22';ctx.shadowBlur=0;
+    }
+    ctx.fill();
+    ctx.shadowBlur=0;
+
+    // Labels for big nodes or hovered
+    if((radius>4&&visible&&camZ>0.7)||isHovered||isNeighbor){
+      ctx.fillStyle=isHovered?'#fff':visible?'rgba(255,255,255,0.7)':'rgba(255,255,255,0.15)';
+      ctx.font=`${isHovered?'bold ':''}${Math.max(9,11/camZ)}px Inter,system-ui`;
+      ctx.textAlign='center';
+      ctx.fillText(n.id,n.x,n.y-radius-5);
+    }
+  });
+
+  ctx.restore();
+  tick();
+  requestAnimationFrame(draw);
+}
+
+// Mouse interaction
+let mx=0,my=0;
+canvas.addEventListener('mousemove',e=>{
+  mx=e.clientX;my=e.clientY;
+  const sx=(mx-camX)/camZ,sy=(my-camY)/camZ;
+  if(dragNode){dragNode.x=sx;dragNode.y=sy;return}
+  hoveredNode=null;
+  for(const n of nodes){
+    const d=Math.hypot(n.x-sx,n.y-sy);
+    if(d<Math.max(n.r*0.55,5)+4){hoveredNode=n;break}
+  }
+  canvas.style.cursor=hoveredNode?'pointer':'grab';
+  const info=document.getElementById('info');
+  if(hoveredNode){
+    const nb=edges.filter(e=>e.s===hoveredNode.id||e.t===hoveredNode.id);
+    const commNames={0:'WhatsApp Bot',1:'Backend Auth',2:'Frontend Pages',3:'Auth UI',4:'Papers API',5:'Analyzer',6:'Upload Scripts',7:'Upload UI',10:'Theme'};
+    info.innerHTML=`<h3>${hoveredNode.id}</h3><span class="tag">${commNames[hoveredNode.c]||'Community '+hoveredNode.c}</span><span class="tag">${nb.length} connections</span><br><br><div style="color:#888;font-size:11px">${nb.slice(0,8).map(e=>`→ ${e.s===hoveredNode.id?e.t:e.s} <span style="color:#555">(${e.tp})</span>`).join('<br>')}${nb.length>8?`<br>… +${nb.length-8} more`:''}</div>`;
+    info.style.display='block';
+  }else{info.style.display='none'}
+});
+
+canvas.addEventListener('mousedown',e=>{
+  const sx=(e.clientX-camX)/camZ,sy=(e.clientY-camY)/camZ;
+  for(const n of nodes){
+    if(Math.hypot(n.x-sx,n.y-sy)<Math.max(n.r*0.55,5)+4){dragNode=n;canvas.style.cursor='grabbing';return}
+  }
+});
+canvas.addEventListener('mouseup',()=>{dragNode=null;canvas.style.cursor='grab'});
+canvas.addEventListener('wheel',e=>{
+  e.preventDefault();
+  const z=camZ;
+  camZ*=e.deltaY>0?0.92:1.08;
+  camZ=Math.max(0.2,Math.min(4,camZ));
+  camX=mx-(mx-camX)*camZ/z;
+  camY=my-(my-camY)*camZ/z;
+},{passive:false});
+
+draw();
+</script>
+</body>
+</html>

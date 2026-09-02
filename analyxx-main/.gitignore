@@ -1,0 +1,70 @@
+# ─── Environment & Secrets ────────────────────────────────────────────────────
+# Block ALL .env files by default across the whole monorepo
+.env
+.env.local
+.env.production
+.env.development
+.env.staging
+.env.*.local
+*/.env
+*/.env.local
+*/.env.production
+*/.env.development
+*/.env.staging
+
+# Always allow safe template files (no real secrets)
+!.env.example
+!*/.env.example
+!**/.env.example
+
+# ─── Python ──────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+*.egg
+dist/
+build/
+.venv/
+venv/
+backend/venv/
+
+# Database files — never commit local SQLite DBs
+*.db
+*.sqlite
+*.sqlite3
+
+# ─── Node ────────────────────────────────────────────────────────────────────
+node_modules/
+**/node_modules/
+.next/
+out/
+.turbo/
+
+# ─── IDE ─────────────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# ─── Logs ────────────────────────────────────────────────────────────────────
+*.log
+logs/
+.analyxx-logs/
+
+# ─── Uploads (local dev only) ────────────────────────────────────────────────
+uploads/
+
+# ─── Docker ──────────────────────────────────────────────────────────────────
+docker-compose.override.yml
+
+# ─── Misc ────────────────────────────────────────────────────────────────────
+*.pem
+*.key
+graphify-out/
+papers_to_upload/
+generated_papers/
+*.pdf
+
+.wrangler/

@@ -1,0 +1,99 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+# CodeRabbit Configuration for Analyxx (pyq-analyzer)
+# Docs: https://docs.coderabbit.ai/guides/configure-coderabbit
+
+language: en-US
+
+# Review settings
+reviews:
+  # High-level review settings
+  request_changes_workflow: false
+  high_level_summary: true
+  high_level_summary_placeholder: "@coderabbit-summary"
+  poem: false
+  collapse_walkthrough: false
+  sequence_diagrams: true
+
+  # Auto-review on PR open
+  auto_review:
+    enabled: true
+    drafts: false
+    base_branches:
+      - main
+      - develop
+
+  # Review profile (chill = fewer nitpicks, assertive = strict)
+  profile: chill
+
+  # Paths to ignore during review
+  path_filters:
+    - "!**/.agents/**"
+    - "!**/.gemini/**"
+    - "!**/node_modules/**"
+    - "!**/dist/**"
+    - "!**/build/**"
+    - "!**/.next/**"
+    - "!**/package-lock.json"
+    - "!**/pnpm-lock.yaml"
+    - "!**/yarn.lock"
+    - "!**/*.min.js"
+    - "!**/*.min.css"
+    - "!**/migrations/*.sql"
+    - "!**/__pycache__/**"
+    - "!**/*.pyc"
+
+  # Path-specific instructions
+  path_instructions:
+    - path: "backend/**/*.py"
+      instructions: |
+        This is a FastAPI Python backend. Review for:
+        - Proper async/await usage
+        - Input validation with Pydantic models
+        - SQL injection prevention (parameterized queries)
+        - Rate limiting and authentication checks
+        - Proper error handling and HTTP status codes
+        - Environment variable usage (no hardcoded secrets)
+        - Supabase client usage patterns
+    - path: "frontend/**/*.tsx"
+      instructions: |
+        This is a Next.js 14+ App Router frontend with TypeScript. Review for:
+        - Proper use of 'use client' vs server components
+        - React hooks best practices (dependency arrays, cleanup)
+        - Responsive design considerations
+        - Accessibility (ARIA labels, semantic HTML)
+        - Proper error boundaries and loading states
+        - SEO meta tags and structured data
+        - No exposed API keys or secrets
+    - path: "frontend/**/*.ts"
+      instructions: |
+        TypeScript utility and API route files. Review for:
+        - Type safety (avoid 'any' types)
+        - Proper error handling in API routes
+        - Input validation and sanitization
+        - Correct HTTP methods and status codes
+    - path: "whatsapp-bot/**"
+      instructions: |
+        WhatsApp bot using Twilio. Review for:
+        - Webhook security (signature validation)
+        - Rate limiting for bot responses
+        - Proper error handling for external API calls
+        - Message length limits
+        - No hardcoded credentials
+
+# Chat settings (for PR comment interactions)
+chat:
+  auto_reply: true
+
+# Knowledge base
+knowledge_base:
+  opt_out: false
+  learnings:
+    scope: auto
+  issues:
+    scope: auto
+  jira:
+    project_keys: []
+  linear:
+    team_keys: []
+  pull_requests:
+    scope: auto
